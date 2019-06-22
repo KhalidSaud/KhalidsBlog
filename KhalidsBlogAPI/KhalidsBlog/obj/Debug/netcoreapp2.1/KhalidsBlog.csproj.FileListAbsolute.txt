@@ -1,0 +1,14 @@
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\bin\Debug\netcoreapp2.1\KhalidsBlog.deps.json
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\bin\Debug\netcoreapp2.1\KhalidsBlog.runtimeconfig.json
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\bin\Debug\netcoreapp2.1\KhalidsBlog.runtimeconfig.dev.json
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\bin\Debug\netcoreapp2.1\KhalidsBlog.dll
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\bin\Debug\netcoreapp2.1\KhalidsBlog.pdb
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.csprojAssemblyReference.cache
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.csproj.CoreCompileInputs.cache
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.RazorAssemblyInfo.cache
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.RazorAssemblyInfo.cs
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.AssemblyInfoInputs.cache
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.AssemblyInfo.cs
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.RazorTargetAssemblyInfo.cache
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.dll
+H:\Dropbox\Udacity\iOS Development\iOS Apps\KhalidsBlog\KhalidsBlog\KhalidsBlog\obj\Debug\netcoreapp2.1\KhalidsBlog.pdb

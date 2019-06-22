@@ -1,0 +1,9 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+KhalidsBlogAPI/KhalidsBlog/appsettings.json
+/KhalidsBlogAPI/KhalidsBlog/appsettings.Development.json
+/KhalidsBlogAPI/KhalidsBlog/test.txt
+test.txt
+
+
