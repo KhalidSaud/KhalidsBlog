@@ -12557,11 +12557,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog.csproj",
+      "projectUniqueName": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlogAPI\\KhalidsBlog\\KhalidsBlog.csproj",
       "projectName": "KhalidsBlog",
-      "projectPath": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog.csproj",
+      "projectPath": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlogAPI\\KhalidsBlog\\KhalidsBlog.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog\\obj\\",
+      "outputPath": "H:\\Dropbox\\Udacity\\iOS Development\\iOS Apps\\KhalidsBlog\\KhalidsBlogAPI\\KhalidsBlog\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

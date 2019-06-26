@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.ObjectModel;
 
 namespace KhalidsBlog.Model
 {
@@ -14,6 +15,8 @@ namespace KhalidsBlog.Model
 		[Required]
 		[Display(Name = "Blog's Title")]
 		public string Title { get; set; }
+
+		public string ImageName { get; set; }
 
 		public string Content { get; set; }
 

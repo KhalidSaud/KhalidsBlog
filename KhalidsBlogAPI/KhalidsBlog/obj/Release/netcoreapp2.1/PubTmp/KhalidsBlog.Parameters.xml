@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="IIS Web Application Name" description="" value="MyBlogApi.khalidsaud.com" tags="IisApp">
-    <parameterEntry kind="ProviderPath" scope="IisApp" match="^H:\\Dropbox\\Udacity\\iOS\ Development\\iOS\ Apps\\KhalidsBlog\\KhalidsBlog\\KhalidsBlog\\obj\\Release\\netcoreapp2\.1\\PubTmp\\Out\\$" />
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^H:\\Dropbox\\Udacity\\iOS\ Development\\iOS\ Apps\\KhalidsBlog\\KhalidsBlogAPI\\KhalidsBlog\\obj\\Release\\netcoreapp2\.1\\PubTmp\\Out\\$" />
   </parameter>
 </parameters>

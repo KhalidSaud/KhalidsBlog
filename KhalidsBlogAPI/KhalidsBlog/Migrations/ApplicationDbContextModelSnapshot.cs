@@ -26,12 +26,29 @@ namespace KhalidsBlog.Migrations
 
                     b.Property<string>("Content");
 
+                    b.Property<string>("ImageName");
+
                     b.Property<string>("Title")
                         .IsRequired();
 
                     b.HasKey("Id");
 
                     b.ToTable("Blog");
+                });
+
+            modelBuilder.Entity("KhalidsBlog.Model.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("KhalidsBlog.Model.User", b =>
