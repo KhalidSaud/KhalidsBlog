@@ -19,7 +19,7 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
     
     @IBOutlet weak var titleTextBox: UITextField!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var contentTextBox: UITextField!
+    @IBOutlet weak var contentTextBox: UITextView!
     
     @IBOutlet weak var addBlogButton: UIBarButtonItem!
     
@@ -29,6 +29,8 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         
         imagePicker.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
     }
     
@@ -39,6 +41,12 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
         titleTextBox.text = titleHolder
         imageView.image = imageHolder
         contentTextBox.text = contentHolder
+        
+        let borderColor = UIColor(displayP3Red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 204.0/255.0)
+
+        contentTextBox.layer.borderColor = borderColor.cgColor;
+        contentTextBox.layer.borderWidth = 1.0;
+        contentTextBox.layer.cornerRadius = 5.0;
 
         if editingMode {
             addBlogButton.title = "Update Blog"
@@ -60,7 +68,7 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
      func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageView.contentMode = .scaleAspectFit
-            
+
             DispatchQueue.main.async {
                 self.imageView.image = pickedImage
                 self.imageView.setNeedsDisplay()
@@ -74,6 +82,29 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
         dismiss(animated: true, completion: nil)
 
     }
+    
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if titleTextBox.isFirstResponder {
+            debugPrint("in")
+            return
+        }
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if titleTextBox.isFirstResponder {
+            return
+        }
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
     
     @IBAction func addAndUpdateButtonPressed(_ sender: Any) {
         
@@ -110,7 +141,6 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
                 
                 debugPrint(blog)
                 
-//                API.init().imageUploadRequest(image: image!, blogId: blog.id, param: nil, completion: (Bool, Error?) -> Void)
                 API.init().imageUploadRequest(image: image!, blogId: blog.id, param: nil, completion: { (boolImage, error) in
                     if error != nil {
                         debugPrint(error?.localizedDescription as Any)
