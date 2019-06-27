@@ -64,7 +64,7 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
         if segue.identifier == "ToBlog" {
             if let detailedBlogController = segue.destination as? DetailedBlogController {
                 
-                var indexPath: NSIndexPath = self.tableView!.indexPathForSelectedRow as! NSIndexPath
+                let indexPath: NSIndexPath = self.tableView!.indexPathForSelectedRow! as NSIndexPath
                 
                 do {
                     detailedBlogController.titleHolder = blogs[indexPath.row].title
@@ -151,7 +151,7 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
     func deleteBlog(id: Int, blogToDelete: Blog) {
         API.deleteBlog(blog: blogToDelete) { (blog, error) in
             if error != nil {
-                debugPrint(error?.localizedDescription)
+                debugPrint(error?.localizedDescription as Any)
             }
             
             // TODO : Notify User
@@ -193,13 +193,20 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
-            debugPrint("Delete")
+            
             // TODO: deleteBlog()
-            
             let blogToDelete = Blog(id: self.blogs[indexPath.row].id, title: self.blogs[indexPath.row].title, imageName: self.blogs[indexPath.row].imageName, content: self.blogs[indexPath.row].content)
-            self.deleteBlog(id: blogToDelete.id, blogToDelete: blogToDelete)
             
-            completionHandler(true)
+            let alert = UIAlertController(title: "Delete ?", message: "Wanna delete ?", preferredStyle: .alert)
+            let actionDelete = UIAlertAction(title: "delete!", style: .destructive, handler: { (action) in
+                self.deleteBlog(id: blogToDelete.id, blogToDelete: blogToDelete)
+                completionHandler(true)
+            })
+            let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(actionDelete)
+            alert.addAction(actionCancel)
+            self.present(alert, animated: true, completion: nil)
+            
         }
         
         let isLoggedIn = true

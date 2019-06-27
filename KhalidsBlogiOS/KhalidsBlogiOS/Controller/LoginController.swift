@@ -20,6 +20,8 @@ class Login: UIViewController {
     @IBAction func LoginButtonPressed(_ sender: Any) {
         
         
+//        API.init().imageUploadRequest(imageView2: "", uploadUrl2: URL(string: "https://myblogapi.khalidsaud.com/api/blogId/7/addImage")!, param: nil)
+        
     }
     
 }

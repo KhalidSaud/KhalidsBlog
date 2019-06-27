@@ -18,6 +18,7 @@
 		E968189222C028D60018A1A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189122C028D60018A1A6 /* User.swift */; };
 		E968189522C02AF60018A1A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189422C02AF60018A1A6 /* AppDelegate.swift */; };
 		E968189722C162790018A1A6 /* DetailedBlogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189622C162790018A1A6 /* DetailedBlogController.swift */; };
+		E968189B22C3DBFA0018A1A6 /* DataExtenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		E968189122C028D60018A1A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E968189422C02AF60018A1A6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E968189622C162790018A1A6 /* DetailedBlogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedBlogController.swift; sourceTree = "<group>"; };
+		E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtenstion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				E934C4EF22BD9C1000569AF6 /* Controller */,
 				E934C4F122BD9C2200569AF6 /* View */,
 				E934C4F222BD9C3B00569AF6 /* Storyboard */,
+				E968189822C3DBD40018A1A6 /* Extenstions */,
 				E934C4F322BD9C4B00569AF6 /* Assets */,
 				E934C4E722BC40CE00569AF6 /* Info.plist */,
 			);
@@ -128,6 +131,14 @@
 				E915773A22BEBB590091EF52 /* API.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		E968189822C3DBD40018A1A6 /* Extenstions */ = {
+			isa = PBXGroup;
+			children = (
+				E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */,
+			);
+			path = Extenstions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +216,7 @@
 				E934C4F522BEBA9900569AF6 /* Blog.swift in Sources */,
 				E934C4EE22BC41DB00569AF6 /* BlogsListController.swift in Sources */,
 				E968189722C162790018A1A6 /* DetailedBlogController.swift in Sources */,
+				E968189B22C3DBFA0018A1A6 /* DataExtenstion.swift in Sources */,
 				E915773B22BEBB590091EF52 /* API.swift in Sources */,
 				E968189522C02AF60018A1A6 /* AppDelegate.swift in Sources */,
 				E968189022C028AB0018A1A6 /* EditAndAddBlogController.swift in Sources */,
