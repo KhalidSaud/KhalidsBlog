@@ -8,8 +8,9 @@
 
 import UIKit
 
-class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class EditAndAddBlogController: UIViewController {
 
+    // MARK: Variables
     var editingMode = false
     
     var idHolder = 0
@@ -17,189 +18,173 @@ class EditAndAddBlogController: UIViewController, UIImagePickerControllerDelegat
     var imageHolder = UIImage(named: "default_image")
     var contentHolder = ""
     
+    let imagePicker = UIImagePickerController()
+    
+    // MARK: Outlets
     @IBOutlet weak var titleTextBox: UITextField!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var contentTextBox: UITextView!
     
     @IBOutlet weak var addBlogButton: UIBarButtonItem!
     
-    let imagePicker = UIImagePickerController()
-    
+    // MARK: viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imagePicker.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        setup()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        imagePicker.delegate = self
-        
+    // MARK: Setup controller and views
+    func setup() {
         titleTextBox.text = titleHolder
         imageView.image = imageHolder
         contentTextBox.text = contentHolder
         
         let borderColor = UIColor(displayP3Red: 204.0/255.0, green: 204.0/255.0, blue: 204.0/255.0, alpha: 204.0/255.0)
-
         contentTextBox.layer.borderColor = borderColor.cgColor;
         contentTextBox.layer.borderWidth = 1.0;
         contentTextBox.layer.cornerRadius = 5.0;
-
+        
+        imagePicker.delegate = self
+        
         if editingMode {
-            addBlogButton.title = "Update Blog"
+        addBlogButton.title = "Update Blog"
         } else {
-            addBlogButton.title = "Add Blog"
+        addBlogButton.title = "Add Blog"
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
+    // MARK: Choose image from gallery and assign it to imageView (not uploaded to api yet)
     @IBAction func uploadImageButtonPressed(_ sender: Any) {
-        
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
         present(imagePicker, animated: true, completion: nil)
-        
     }
     
-     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageView.contentMode = .scaleAspectFit
-
-            DispatchQueue.main.async {
-                self.imageView.image = pickedImage
-                self.imageView.setNeedsDisplay()
-            }
-        }
-        dismiss(animated: true, completion: nil)
-        
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-
-    }
-    
-    
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if titleTextBox.isFirstResponder {
-            debugPrint("in")
-            return
-        }
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
-            }
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if titleTextBox.isFirstResponder {
-            return
-        }
-        if self.view.frame.origin.y != 0 {
-            self.view.frame.origin.y = 0
-        }
-    }
-    
-    
+    // MARK: Main add/update button to API database.
     @IBAction func addAndUpdateButtonPressed(_ sender: Any) {
+        
+        if !validateFields() {
+            showAlert(title: "Error", message: "Please all fields")
+            return
+        }
+        
+        if !editingMode {
+            // MARK: Post Api
+            displayActivityIndicator(shouldDisplay: true)
+            addBlog()
+        } else {
+            // MARK: Put Api
+            displayActivityIndicator(shouldDisplay: true)
+            updateBlog()
+        }
+    }
+    
+    
+    func validateFields() -> Bool {
         
         if titleTextBox.text == "" {
             debugPrint("Title is emtpy")
-            return
+            return false
         }
         
         if contentTextBox.text == "" {
             debugPrint("Content is emtpy")
-            return
+            return false
         }
         
         var image = self.imageView.image
+        if image == nil { image = UIImage(named: "default_image") }
         
-        if image == nil {
-            image = UIImage(named: "default_image")
-        }
-        
-        if !editingMode {
-            // TODO : Post Api
-            let blog = BlogToSend(title: titleTextBox.text!, imageName: "", content: contentTextBox.text!)
-            
-            API.postBlog(blog: blog) { (blog, error) in
-                if error != nil {
-                    debugPrint(error?.localizedDescription as Any)
-                    return
-                }
-                
-                guard let blog = blog else {
-                    debugPrint("guard issue")
-                    return
-                }
-                
-                debugPrint(blog)
-                
-                API.init().imageUploadRequest(image: image!, blogId: blog.id, param: nil, completion: { (boolImage, error) in
-                    if error != nil {
-                        debugPrint(error?.localizedDescription as Any)
-                        return
-                    }
-                    
-                    if boolImage == false {
-                        debugPrint("Image Not Found To upload")
-                        return
-                    } else {
-                        
-                        debugPrint("Image uploaded")
-                        
-                        // TODO : Go To List
-                        DispatchQueue.main.async {
-                            self.navigationController?.popToRootViewController(animated: true)
-                        }
-                        
-                    }
-                    
-                })
-
-                
-            }
-        } else {
-            // TODO : Put Api
-            let blogToUpdate = Blog(id: idHolder, title: titleTextBox.text!, imageName: "", content: contentTextBox.text!)
-            
-            API.putBlog(blog: blogToUpdate) { (blog, error) in
-                if error != nil {
-                    debugPrint(error?.localizedDescription as Any)
-                }
-                
-                // TODO : Upload Current or New Image
-//                API.init().imageUploadRequest(image: image!, blogId: blogToUpdate.id, param: nil)
-                API.init().imageUploadRequest(image: image!, blogId: blogToUpdate.id, param: nil, completion: { (boolImage, error) in
-                    if error != nil {
-                        debugPrint(error?.localizedDescription as Any)
-                        return
-                    }
-                    
-                    if boolImage == false {
-                        debugPrint("Image Not Found To upload")
-                        return
-                    } else {
-                        
-                        debugPrint("Blog and Image uploaded")
-                        
-                        // TODO : Go To List
-                        DispatchQueue.main.async {
-                            self.navigationController?.popToRootViewController(animated: true)
-                        }
-                    }
-                    
-                })
-
-            }
-        }
+        return true
         
     }
     
+    // MARK: Add blog to API database.
+    func addBlog() {
+        
+        let blog = BlogToSend(title: titleTextBox.text!, imageName: "", content: contentTextBox.text!)
+        
+        API.postBlog(blog: blog) { (blog, error) in
+            if error != nil {
+                debugPrint(error?.localizedDescription as Any)
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error!.localizedDescription)
+                }
+                return
+            }
+            
+            guard let blog = blog else {
+                return
+            }
+            
+            API.init().imageUploadRequest(image: self.imageView.image!, blogId: blog.id, param: nil, completion: { (boolImage, error) in
+                if error != nil {
+                    debugPrint(error?.localizedDescription as Any)
+                    DispatchQueue.main.async {
+                        self.showAlert(title: "Error", message: error!.localizedDescription)
+                    }
+                    return
+                }
+                if boolImage == false {
+                    debugPrint("Image Not Found To upload")
+                    DispatchQueue.main.async {
+                        self.showAlert(title: "Error", message: "Image Not Found")
+                    }
+                    return
+                } else {
+                    debugPrint("Image uploaded")
+                    DispatchQueue.main.async {
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            })
+        }
+    }
+    
+    // MARK: Update blog in API database.
+    func updateBlog() {
+        
+        let blogToUpdate = Blog(id: idHolder, title: titleTextBox.text!, imageName: "", content: contentTextBox.text!)
+        let image = self.imageView.image!
+        
+        API.putBlog(blog: blogToUpdate) { (blog, error) in
+            if error != nil {
+                debugPrint(error?.localizedDescription as Any)
+                DispatchQueue.main.async {
+                    self.displayActivityIndicator(shouldDisplay: false)
+                }
+            }
+  
+            
+            API.init().imageUploadRequest(image: image, blogId: blogToUpdate.id, param: nil, completion: { (boolImage, error) in
+                if error != nil {
+                    debugPrint(error?.localizedDescription as Any)
+                    DispatchQueue.main.async {
+                        self.displayActivityIndicator(shouldDisplay: false)
+                    }
+                    return
+                }
+                
+                if boolImage == false {
+                    debugPrint("Image Not Found To upload")
+                    DispatchQueue.main.async {
+                        self.displayActivityIndicator(shouldDisplay: false)
+                    }
+                    return
+                } else {
+                    
+                    debugPrint("Blog and Image uploaded")
+                    DispatchQueue.main.async {
+                        self.displayActivityIndicator(shouldDisplay: false)
+                        self.navigationController?.popToRootViewController(animated: true)
+                    }
+                }
+            })
+        }
+    }
 }

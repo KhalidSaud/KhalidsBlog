@@ -22,16 +22,9 @@ class DetailedBlogController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         titleView.text = titleHolder
         imageView.image = imageHolder
         content.text = contentHolder
     }
     
-
 }

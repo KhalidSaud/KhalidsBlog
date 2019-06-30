@@ -32,8 +32,6 @@ class API {
             
             do {
                 let responseObject = try JSONDecoder().decode([Blog].self, from: data)
-//                debugPrint("Results here")
-//                debugPrint(String(data: data, encoding: .utf8))
                 completions(responseObject, nil)
             } catch {
                 debugPrint(error)
@@ -109,7 +107,6 @@ class API {
         var request = URLRequest(url: URL(string: "\(API.init().BlogsApiUrl)/\(blog.id)")!)
         request.httpMethod = "DELETE"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpBody = try! JSONEncoder().encode(blog)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             
             if error != nil {
@@ -159,7 +156,6 @@ class API {
             }
             
             do {
-//                debugPrint(String(data: data, encoding: .utf8))
                 let image = UIImage(data: data)
                 completions(image, nil)
             } catch {

@@ -10,6 +10,8 @@ import UIKit
 
 class Login: UIViewController {
 
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,8 +21,29 @@ class Login: UIViewController {
 
     @IBAction func LoginButtonPressed(_ sender: Any) {
         
+        if !validateFields() {
+            showAlert(title: "Error", message: "Please fill all fields!")
+            return
+        }
         
-//        API.init().imageUploadRequest(imageView2: "", uploadUrl2: URL(string: "https://myblogapi.khalidsaud.com/api/blogId/7/addImage")!, param: nil)
+        self.navigationController?.popToRootViewController(animated: true)
+        
+        
+    }
+    
+    func validateFields() -> Bool {
+        
+        if emailTextField.text == "" {
+            debugPrint("Title is emtpy")
+            return false
+        }
+        
+        if passwordTextField.text == "" {
+            debugPrint("Content is emtpy")
+            return false
+        }
+        
+        return true
         
     }
     

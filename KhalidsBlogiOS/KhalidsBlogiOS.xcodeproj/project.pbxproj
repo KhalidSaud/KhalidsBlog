@@ -18,7 +18,11 @@
 		E968189222C028D60018A1A6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189122C028D60018A1A6 /* User.swift */; };
 		E968189522C02AF60018A1A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189422C02AF60018A1A6 /* AppDelegate.swift */; };
 		E968189722C162790018A1A6 /* DetailedBlogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189622C162790018A1A6 /* DetailedBlogController.swift */; };
-		E968189B22C3DBFA0018A1A6 /* DataExtenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */; };
+		E9AE876A22C67D000095B274 /* EditAndAddBlog+ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876922C67D000095B274 /* EditAndAddBlog+ImagePicker.swift */; };
+		E9AE876C22C683790095B274 /* EditAndAddBlogController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876B22C683790095B274 /* EditAndAddBlogController+Keyboard.swift */; };
+		E9AE876E22C6886F0095B274 /* BlogsListController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876D22C6886F0095B274 /* BlogsListController+UITableView.swift */; };
+		E9AE877022C68F560095B274 /* UIViewController+ShowAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876F22C68F560095B274 /* UIViewController+ShowAlert.swift */; };
+		E9AE877222C7C0A20095B274 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE877122C7C0A20095B274 /* UIViewController+ActivityIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +39,11 @@
 		E968189122C028D60018A1A6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E968189422C02AF60018A1A6 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E968189622C162790018A1A6 /* DetailedBlogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedBlogController.swift; sourceTree = "<group>"; };
-		E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtenstion.swift; sourceTree = "<group>"; };
+		E9AE876922C67D000095B274 /* EditAndAddBlog+ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAndAddBlog+ImagePicker.swift"; sourceTree = "<group>"; };
+		E9AE876B22C683790095B274 /* EditAndAddBlogController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditAndAddBlogController+Keyboard.swift"; sourceTree = "<group>"; };
+		E9AE876D22C6886F0095B274 /* BlogsListController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogsListController+UITableView.swift"; sourceTree = "<group>"; };
+		E9AE876F22C68F560095B274 /* UIViewController+ShowAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ShowAlert.swift"; sourceTree = "<group>"; };
+		E9AE877122C7C0A20095B274 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,7 +144,11 @@
 		E968189822C3DBD40018A1A6 /* Extenstions */ = {
 			isa = PBXGroup;
 			children = (
-				E968189A22C3DBFA0018A1A6 /* DataExtenstion.swift */,
+				E9AE876922C67D000095B274 /* EditAndAddBlog+ImagePicker.swift */,
+				E9AE876B22C683790095B274 /* EditAndAddBlogController+Keyboard.swift */,
+				E9AE876D22C6886F0095B274 /* BlogsListController+UITableView.swift */,
+				E9AE876F22C68F560095B274 /* UIViewController+ShowAlert.swift */,
+				E9AE877122C7C0A20095B274 /* UIViewController+ActivityIndicator.swift */,
 			);
 			path = Extenstions;
 			sourceTree = "<group>";
@@ -214,10 +226,14 @@
 			files = (
 				E934C4DE22BC40CB00569AF6 /* LoginController.swift in Sources */,
 				E934C4F522BEBA9900569AF6 /* Blog.swift in Sources */,
+				E9AE876A22C67D000095B274 /* EditAndAddBlog+ImagePicker.swift in Sources */,
+				E9AE876E22C6886F0095B274 /* BlogsListController+UITableView.swift in Sources */,
 				E934C4EE22BC41DB00569AF6 /* BlogsListController.swift in Sources */,
 				E968189722C162790018A1A6 /* DetailedBlogController.swift in Sources */,
-				E968189B22C3DBFA0018A1A6 /* DataExtenstion.swift in Sources */,
 				E915773B22BEBB590091EF52 /* API.swift in Sources */,
+				E9AE876C22C683790095B274 /* EditAndAddBlogController+Keyboard.swift in Sources */,
+				E9AE877022C68F560095B274 /* UIViewController+ShowAlert.swift in Sources */,
+				E9AE877222C7C0A20095B274 /* UIViewController+ActivityIndicator.swift in Sources */,
 				E968189522C02AF60018A1A6 /* AppDelegate.swift in Sources */,
 				E968189022C028AB0018A1A6 /* EditAndAddBlogController.swift in Sources */,
 				E968189222C028D60018A1A6 /* User.swift in Sources */,

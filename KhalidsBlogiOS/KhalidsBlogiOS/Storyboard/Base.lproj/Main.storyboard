@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="QfM-49-Bv2">
-                                <rect key="frame" x="50" y="383" width="314" height="130"/>
+                                <rect key="frame" x="50" y="248.66666666666663" width="314" height="130"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mCX-B7-X44">
                                         <rect key="frame" x="0.0" y="0.0" width="314" height="30"/>
@@ -28,13 +28,13 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="c8y-76-KWI">
-                                        <rect key="frame" x="0.0" y="50" width="314" height="30"/>
+                                        <rect key="frame" x="0.0" y="50.000000000000028" width="314" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Llf-RZ-SYk">
-                                        <rect key="frame" x="0.0" y="100" width="314" height="30"/>
+                                        <rect key="frame" x="0.0" y="100.00000000000003" width="314" height="30"/>
                                         <state key="normal" title="Login"/>
                                         <connections>
                                             <action selector="LoginButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="REb-si-ad3"/>
@@ -46,12 +46,16 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="QfM-49-Bv2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="37V-qh-C8r"/>
-                            <constraint firstItem="QfM-49-Bv2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7OS-9O-oCR"/>
+                            <constraint firstItem="QfM-49-Bv2" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.7" id="7OS-9O-oCR"/>
                             <constraint firstItem="QfM-49-Bv2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="Pp6-Q4-rMH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QfM-49-Bv2" secondAttribute="trailing" constant="50" id="S3Z-og-gBk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="mCX-B7-X44" id="x3K-zc-xQp"/>
+                        <outlet property="passwordTextField" destination="c8y-76-KWI" id="ep9-pT-xx9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -193,10 +197,17 @@
                                     <action selector="AddButtonPressed:" destination="3Wn-84-4y6" id="pks-1j-1Pu"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="refresh" id="g2T-gf-AHe"/>
+                            <barButtonItem systemItem="refresh" id="g2T-gf-AHe">
+                                <connections>
+                                    <action selector="refreshButtonPressed:" destination="3Wn-84-4y6" id="aEz-a4-kil"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="KVJ-XP-afz" id="5aF-gR-wnh"/>
+                        <outlet property="loginButton" destination="Fk8-Ho-cDg" id="uS0-1N-4jF"/>
+                        <outlet property="refreshButton" destination="g2T-gf-AHe" id="iQx-iO-QIt"/>
                         <outlet property="tableView" destination="z5F-sh-rcA" id="ZV1-al-YMd"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="ToLogin" id="9Tr-Fv-ktb"/>
                         <segue destination="pUO-QH-BtB" kind="show" identifier="ToBlog" id="Vo3-oM-FPx"/>

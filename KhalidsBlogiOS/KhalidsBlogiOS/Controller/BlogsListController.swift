@@ -8,11 +8,16 @@
 
 import UIKit
 
-class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class BlogsListController: UIViewController {
+    
+    var isLoggedIn = false
     
     var dummyData:[String] = ["test 1", "test 2", "test 3"]
     var blogs:[Blog] = []
+    var tempBlogs:[Blog] = []
     var images:[Int:UIImage] = [:]
+    
+    var countToStopIndicator = 0
     
     var idHolder = 0
     var titleHolder = ""
@@ -22,15 +27,17 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var loginButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        
-        // TODO: isLoogedIn hide show change labels
-        
+        checkIfLoggedin()
 
     }
     
@@ -39,15 +46,47 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
         
         getListFromApi()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        displayActivityIndicator(shouldDisplay: true)
+    }
 
+    func checkIfLoggedin() {
+
+        // TODO : user defaults
+        let username = "1"
+        let password = "1"
+        
+        if !username.isEmpty && !password.isEmpty {
+            isLoggedIn = true
+        } else {
+            isLoggedIn = false
+        }
+        
+        setupAccess()
+    }
+    
+    func setupAccess() {
+        if isLoggedIn {
+            loginButton.title = "Log in"
+            addButton.isEnabled = true
+            refreshButton.isEnabled = true
+        } else {
+            loginButton.title = "Log Out"
+            addButton.isEnabled = false
+            refreshButton.isEnabled = false
+        }
+    }
     
     @IBAction func LoginButtonPressed(_ sender: Any) {
-        let isLoggedIn = true
+        
         
         if isLoggedIn {
             performSegue(withIdentifier: "ToLogin", sender: nil)
         } else {
-            // logout
+            // TODO: logout
+            
         }
         
     }
@@ -57,6 +96,9 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
         performSegue(withIdentifier: "ListToEditAndAddView", sender: nil)
     }
     
+    @IBAction func refreshButtonPressed(_ sender: Any) {
+        getListFromApi()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
@@ -64,15 +106,15 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
         if segue.identifier == "ToBlog" {
             if let detailedBlogController = segue.destination as? DetailedBlogController {
                 
-                let indexPath: NSIndexPath = self.tableView!.indexPathForSelectedRow! as NSIndexPath
-                
-                do {
-                    detailedBlogController.titleHolder = blogs[indexPath.row].title
+                let indexPath = sender as! IndexPath
+                detailedBlogController.titleHolder = blogs[indexPath.row].title
+                if images[blogs[indexPath.row].id] == nil {
+                    detailedBlogController.imageHolder = UIImage(named: "default_image")!
+                } else {
                     detailedBlogController.imageHolder = images[blogs[indexPath.row].id]!
-                    detailedBlogController.contentHolder = blogs[indexPath.row].content
-                } catch {
-                    debugPrint("ToBlog segue error")
                 }
+                detailedBlogController.contentHolder = blogs[indexPath.row].content
+                
             }
         }
         
@@ -80,24 +122,19 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
 
             if let editAndAddVC = segue.destination as? EditAndAddBlogController {
                 
-                do {
-                    if !editingMode {
-                        editAndAddVC.titleHolder = ""
-                        editAndAddVC.imageHolder = UIImage(named: "default_image")
-                        editAndAddVC.contentHolder = ""
-                        editAndAddVC.editingMode = false;
-                    } else {
-                        editAndAddVC.idHolder = idHolder
-                        editAndAddVC.titleHolder = titleHolder
-                        editAndAddVC.imageHolder = imageHolder
-                        editAndAddVC.contentHolder = contentHolder
-                        editAndAddVC.editingMode = true;
-                    }
-                    
-                    
-                } catch {
-                    debugPrint("ToBlog segue error")
+                if !editingMode {
+                    editAndAddVC.titleHolder = ""
+                    editAndAddVC.imageHolder = UIImage(named: "default_image")
+                    editAndAddVC.contentHolder = ""
+                    editAndAddVC.editingMode = false;
+                } else {
+                    editAndAddVC.idHolder = idHolder
+                    editAndAddVC.titleHolder = titleHolder
+                    editAndAddVC.imageHolder = imageHolder
+                    editAndAddVC.contentHolder = contentHolder
+                    editAndAddVC.editingMode = true;
                 }
+                
             }
         }
         
@@ -105,122 +142,77 @@ class BlogsListController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     func getListFromApi() {
-        blogs = []
-        images = [:]
+        
+        tempBlogs = []
+        self.displayActivityIndicator(shouldDisplay: true)
         
         API.getBlog { (blogs, error) in
+            
             if error != nil {
-                debugPrint("error in login button \(String(describing: error))")
+                debugPrint(error!.localizedDescription)
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error!.localizedDescription)
+                    self.displayActivityIndicator(shouldDisplay: false)
+                }
                 return
             }
             
             for blog in blogs {
                 
-                self.blogs.append(blog!)
+                self.tempBlogs.append(blog!)
+                self.getBlogImageFromApi(blog: blog)
                 
-                API.getImages(imageName: blog?.imageName ?? "") { (image, error) in
-                    
-                    guard let blog = blog else {
-                        return
+            }
+            
+            
+            DispatchQueue.main.async {
+                self.blogs = self.tempBlogs
+                self.countToStopIndicator = self.blogs.count
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func getBlogImageFromApi(blog: Blog?) {
+        
+        API.getImages(imageName: blog?.imageName ?? "") { (image, error) in
+            
+            if error != nil {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error!.localizedDescription)
+                    self.displayActivityIndicator(shouldDisplay: false)
+                }
+            }
+            
+            guard let blog = blog else {
+                return
+            }
+            
+            if image == nil {
+                
+                DispatchQueue.main.async {
+                    self.images[blog.id] = UIImage(named: "default_image")
+                    self.tableView.reloadData()
+                    if self.images.count == self.countToStopIndicator {
+                        self.displayActivityIndicator(shouldDisplay: false)
                     }
-                    
-                    if image == nil {
-                        self.images[blog.id] = UIImage(named: "default_image")
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                        return
-                    }
-                    
-                    guard let image = image else {
-                        debugPrint("image issue")
-                        
-                        return
-                    }
-                    
-                    self.images[blog.id] = image
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                }
+                return
+            }
+            
+            guard let image = image else {
+                return
+            }
+            
+            
+            DispatchQueue.main.async {
+                self.images[blog.id] = image
+                self.tableView.reloadData()
+                if self.images.count == self.countToStopIndicator {
+                    self.displayActivityIndicator(shouldDisplay: false)
                 }
             }
         }
     }
-    
-    
-    func deleteBlog(id: Int, blogToDelete: Blog) {
-        API.deleteBlog(blog: blogToDelete) { (blog, error) in
-            if error != nil {
-                debugPrint(error?.localizedDescription as Any)
-            }
-            
-            // TODO : Notify User
-            debugPrint("Blog Deleted!")
-            
-        }
-    }
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return blogs.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell()
-        
-        cell.textLabel?.text = blogs[indexPath.row].title
-        cell.imageView?.image = images[blogs[indexPath.row].id]
-        cell.detailTextLabel?.text = "secondray text"
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "ToBlog", sender: nil)
-    }
-    
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let update = UIContextualAction(style: .normal, title: "Update") { (action, view, completion) in
-            self.idHolder = self.blogs[indexPath.row].id
-            self.titleHolder = self.blogs[indexPath.row].title
-            self.imageHolder = self.images[self.blogs[indexPath.row].id]
-            self.contentHolder = self.blogs[indexPath.row].content
-            self.editingMode = true
-            self.performSegue(withIdentifier: "ListToEditAndAddView", sender: nil)
-            completion(true)
-        }
-        
-        let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
-            
-            // TODO: deleteBlog()
-            let blogToDelete = Blog(id: self.blogs[indexPath.row].id, title: self.blogs[indexPath.row].title, imageName: self.blogs[indexPath.row].imageName, content: self.blogs[indexPath.row].content)
-            
-            let alert = UIAlertController(title: "Delete ?", message: "Wanna delete ?", preferredStyle: .alert)
-            let actionDelete = UIAlertAction(title: "delete!", style: .destructive, handler: { (action) in
-                self.deleteBlog(id: blogToDelete.id, blogToDelete: blogToDelete)
-                completionHandler(true)
-            })
-            let actionCancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alert.addAction(actionDelete)
-            alert.addAction(actionCancel)
-            self.present(alert, animated: true, completion: nil)
-            
-        }
-        
-        let isLoggedIn = true
-        let swipeAction:UISwipeActionsConfiguration
-        
-        if isLoggedIn == true {
-            swipeAction = UISwipeActionsConfiguration(actions: [update, delete])
-        } else {
-            swipeAction = UISwipeActionsConfiguration(actions: [])
-        }
-        
-        swipeAction.performsFirstActionWithFullSwipe = false
-        return swipeAction
-    }
-
 
 }
