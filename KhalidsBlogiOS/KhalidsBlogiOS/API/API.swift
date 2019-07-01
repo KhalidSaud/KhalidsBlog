@@ -8,12 +8,56 @@
 
 import UIKit
 
-class API {
+class API : Login {
     
     let BlogsApiUrl = "https://myblogapi.khalidsaud.com/api/blogs"
     let ImagesApiUrl = "https://myblogapi.khalidsaud.com/api/image"
+    let UsersApiUrl = "https://myblogapi.khalidsaud.com/api/auth"
     
 
+    // MARK: GetUser
+    class func getUser(userToSend: UserToSend ,completions: @escaping (User?, String?, Error?) -> Void) {
+        var request = URLRequest(url: URL(string: API.init().UsersApiUrl)!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try! JSONEncoder().encode(userToSend)
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if error != nil {
+                debugPrint("error")
+                completions(nil, nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                debugPrint("No Data")
+                completions(nil, nil, error)
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode == 401 {
+                    let message = String(data: data, encoding: .utf8) as! String
+                    completions(nil, message, nil)
+                    return
+                }
+            }
+            
+            do {
+                debugPrint("results are here")
+                let responseObject = try JSONDecoder().decode(User.self, from: data)
+                completions(responseObject, nil, nil)
+            } catch {
+                debugPrint(error)
+                completions(nil, nil, error)
+                return
+            }
+            
+        }
+        task.resume()
+    }
+    
+    // MARK: GetBlog
     class func getBlog(completions: @escaping ([Blog?], Error?) -> Void) {
         let request = URLRequest(url: URL(string: API.init().BlogsApiUrl)!)
         
@@ -43,7 +87,7 @@ class API {
         task.resume()
     }
     
-    // TODO: Post
+    // MARK: Post
     class func postBlog(blog: BlogToSend,completions: @escaping (Blog?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: API.init().BlogsApiUrl)!)
         request.httpMethod = "POST"
@@ -77,7 +121,7 @@ class API {
         task.resume()
     }
     
-    // TODO: Put
+    // MARK: Put
     class func putBlog(blog: Blog,completions: @escaping (String?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: "\(API.init().BlogsApiUrl)/\(blog.id)")!)
         request.httpMethod = "PUT"
@@ -102,7 +146,7 @@ class API {
         task.resume()
     }
     
-    // TODO: Delete
+    // MARK: Delete
     class func deleteBlog(blog: Blog,completions: @escaping (Blog?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: "\(API.init().BlogsApiUrl)/\(blog.id)")!)
         request.httpMethod = "DELETE"
@@ -134,7 +178,7 @@ class API {
         task.resume()
     }
     
-    // TODO: Get User for login
+    
     
     // MARK: Get Image
     
@@ -168,14 +212,12 @@ class API {
         task.resume()
     }
     
-    // TODO : Post Image
+    // MARK : Post Image
 
     
     func imageUploadRequest(image: UIImage, blogId: Int, param: [String:String]?, completion: @escaping (Bool, Error?) -> Void) {
         
-        //let myUrl = NSURL(string: "http://192.168.1.103/upload.photo/index.php");
         let uploadUrl = URL(string: "https://myblogapi.khalidsaud.com/api/blogId/\(blogId)/addImage")!
-//        var imageView = UIImage(named: "pexels-photo-414612")
         
         let request = NSMutableURLRequest(url:uploadUrl);
         request.httpMethod = "POST"
@@ -190,8 +232,6 @@ class API {
         
         request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
         
-        //myActivityIndicator.startAnimating();
-        
         let task =  URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
                     if let data = data {
                         
@@ -201,18 +241,6 @@ class API {
                         print(data.count)
                         
                         completion(true, nil)
-                        // you can use data here
-                        
-                        // Print out reponse body
-//                        let responseString = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-//                        print("****** response data = \(responseString!)")
-                        
-//                        let json =  try!JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? NSDictionary
-//
-//                        print("json value \(String(describing: json))")
-                        
-                        //var json = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: &err)
-                        
                         
                         
                     } else if let error = error {
@@ -256,7 +284,7 @@ class API {
         return "Boundary-\(NSUUID().uuidString)"
     }
     
-}// extension for impage uploading
+}
 
 extension NSMutableData {
     

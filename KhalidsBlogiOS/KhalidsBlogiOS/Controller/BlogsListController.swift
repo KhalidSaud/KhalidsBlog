@@ -36,44 +36,38 @@ class BlogsListController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        checkIfLoggedin()
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        checkIfLoggedIn()
+        setupAccess()
         getListFromApi()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayActivityIndicator(shouldDisplay: true)
     }
-
-    func checkIfLoggedin() {
-
-        // TODO : user defaults
-        let username = "1"
-        let password = "1"
-        
-        if !username.isEmpty && !password.isEmpty {
+    
+    func checkIfLoggedIn() {
+        if (UserDefaults.standard.string(forKey: "email") != nil && UserDefaults.standard.string(forKey: "password") != nil) {
             isLoggedIn = true
         } else {
             isLoggedIn = false
         }
-        
-        setupAccess()
     }
     
     func setupAccess() {
         if isLoggedIn {
-            loginButton.title = "Log in"
+            loginButton.title = "Log Out"
             addButton.isEnabled = true
             refreshButton.isEnabled = true
         } else {
-            loginButton.title = "Log Out"
+            loginButton.title = "Log In"
             addButton.isEnabled = false
             refreshButton.isEnabled = false
         }
@@ -82,11 +76,15 @@ class BlogsListController: UIViewController {
     @IBAction func LoginButtonPressed(_ sender: Any) {
         
         
-        if isLoggedIn {
+        if !isLoggedIn {
             performSegue(withIdentifier: "ToLogin", sender: nil)
         } else {
-            // TODO: logout
-            
+            // MARK: logout
+            UserDefaults.standard.removeObject(forKey: "email")
+            UserDefaults.standard.removeObject(forKey: "password")
+            isLoggedIn = false
+            setupAccess()
+            tableView.reloadData()
         }
         
     }

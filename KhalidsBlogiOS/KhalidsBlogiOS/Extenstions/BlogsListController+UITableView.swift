@@ -70,7 +70,6 @@ extension BlogsListController: UITableViewDelegate, UITableViewDataSource {
             
         }
         
-        let isLoggedIn = true
         let swipeAction:UISwipeActionsConfiguration
         
         if isLoggedIn == true {
@@ -85,18 +84,18 @@ extension BlogsListController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Delete blog from API database
     func deleteBlog(id: Int, blogToDelete: Blog) {
-//        API.deleteBlog(blog: blogToDelete) { (blog, error) in
-//            if error != nil {
-//                debugPrint(error?.localizedDescription as Any)
-//                DispatchQueue.main.async {
-//                    self.showAlert(title: "Error", message: error!.localizedDescription)
-//                }
-//            }
-//            debugPrint("Blog Deleted!")
-//            DispatchQueue.main.async {
-//                self.showAlert(title: "Deleted!", message: "Blog Deleted Successfully!")
-//            }
-//        }
+        API.deleteBlog(blog: blogToDelete) { (blog, error) in
+            if error != nil {
+                debugPrint(error?.localizedDescription as Any)
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error!.localizedDescription)
+                }
+            }
+            debugPrint("Blog Deleted!")
+            DispatchQueue.main.async {
+                self.showAlert(title: "Deleted!", message: "Blog Deleted Successfully!")
+            }
+        }
     }
     
 }

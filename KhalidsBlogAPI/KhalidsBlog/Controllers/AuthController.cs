@@ -6,36 +6,42 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KhalidsBlog.Model;
+using System.Net.Http;
+using System.Net;
 
 namespace KhalidsBlog.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
-    {
-        private readonly ApplicationDbContext _context;
+	[Route("api/[controller]")]
+	[ApiController]
+	public class AuthController : ControllerBase
+	{
+		private readonly ApplicationDbContext _context;
 
-        public AuthController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public AuthController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
 		[HttpGet]
-		public IEnumerable<User> GetUsers()
+		public IEnumerable<User> GetLogin()
 		{
 			return _context.Users;
 		}
 
-		[HttpPost("login")]
-		public async Task<IActionResult> Login(User user)
+		//[Route("login")]
+		[HttpPost]
+		public async Task<IActionResult> PostLogin(User user)
 		{
 			var userFromRepo = await Login(user.Email.ToLower(), user.Password);
 
 			if (userFromRepo == null)
-				return Unauthorized();
+			{
+				return StatusCode(StatusCodes.Status401Unauthorized, "Wrong email or password!");
+			}
 
 
-			return Ok();
+
+			return Ok(userFromRepo);
 		}
 
 
@@ -54,8 +60,8 @@ namespace KhalidsBlog.Controllers
 
 
 		private bool UserExists(int id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
-    }
+		{
+			return _context.Users.Any(e => e.Id == id);
+		}
+	}
 }

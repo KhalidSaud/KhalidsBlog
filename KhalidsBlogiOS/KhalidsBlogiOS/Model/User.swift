@@ -9,5 +9,10 @@
 import Foundation
 
 struct User: Codable {
+    let id: Int
+    let email, password: String
+}
+
+struct UserToSend: Codable {
     let email, password: String
 }

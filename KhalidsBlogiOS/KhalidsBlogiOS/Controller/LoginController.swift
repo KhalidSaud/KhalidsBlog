@@ -26,7 +26,8 @@ class Login: UIViewController {
             return
         }
         
-        self.navigationController?.popToRootViewController(animated: true)
+        getUser()
+//        self.navigationController?.popToRootViewController(animated: true)
         
         
     }
@@ -44,6 +45,46 @@ class Login: UIViewController {
         }
         
         return true
+        
+    }
+    
+    func getUser() {
+    
+        let userToSend = UserToSend(email: emailTextField.text!, password: passwordTextField.text!)
+        
+        API.getUser(userToSend: userToSend) { (user, response, error) in
+            if error != nil {
+                debugPrint(error!.localizedDescription)
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: error!.localizedDescription)
+                }
+                return
+            }
+            
+            if response != nil {
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Error", message: response!)
+                }
+                
+                return
+            }
+            
+            guard let user = user else {
+                return
+            }
+                        
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(user.email, forKey: "email")
+            userDefaults.set(user.password, forKey: "password")
+            userDefaults.synchronize()
+            
+            
+            DispatchQueue.main.async {
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            
+            
+        }
         
     }
     
