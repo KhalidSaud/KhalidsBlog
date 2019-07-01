@@ -11,7 +11,7 @@ password: password
 
 # API
 
-Khalid's Blog App is connected to a custom made API, altught it was not part of the project requirments, we spent our time to create this API aiming to increase personal skill for a brighter future.
+Khalid's Blog App is connected to a custom made API, although it was not part of the project requirments, we spent our time to create this API aiming to increase personal skill for a brighter future.
 API is made with ASP.NET Core 2.1, Entity Framewrok and SQL Server.
 API is connected to a personal Server.
 
