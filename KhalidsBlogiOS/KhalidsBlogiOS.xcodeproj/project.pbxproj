@@ -23,6 +23,9 @@
 		E9AE876E22C6886F0095B274 /* BlogsListController+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876D22C6886F0095B274 /* BlogsListController+UITableView.swift */; };
 		E9AE877022C68F560095B274 /* UIViewController+ShowAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE876F22C68F560095B274 /* UIViewController+ShowAlert.swift */; };
 		E9AE877222C7C0A20095B274 /* UIViewController+ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AE877122C7C0A20095B274 /* UIViewController+ActivityIndicator.swift */; };
+		E9E53E0122CC10F8004F62F6 /* BlogsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9E53DFF22CC10F8004F62F6 /* BlogsModel.xcdatamodeld */; };
+		E9F95AD222CAEDDD00FA3C60 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F95AD122CAEDDD00FA3C60 /* DataController.swift */; };
+		E9F95AD522CAEE0700FA3C60 /* BlogModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9F95AD322CAEE0700FA3C60 /* BlogModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,9 @@
 		E9AE876D22C6886F0095B274 /* BlogsListController+UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogsListController+UITableView.swift"; sourceTree = "<group>"; };
 		E9AE876F22C68F560095B274 /* UIViewController+ShowAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ShowAlert.swift"; sourceTree = "<group>"; };
 		E9AE877122C7C0A20095B274 /* UIViewController+ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+ActivityIndicator.swift"; sourceTree = "<group>"; };
+		E9E53E0022CC10F8004F62F6 /* BlogsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlogsModel.xcdatamodel; sourceTree = "<group>"; };
+		E9F95AD122CAEDDD00FA3C60 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		E9F95AD422CAEE0700FA3C60 /* BlogModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BlogModel.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,9 @@
 			children = (
 				E934C4F422BEBA9900569AF6 /* Blog.swift */,
 				E968189122C028D60018A1A6 /* User.swift */,
+				E9F95AD122CAEDDD00FA3C60 /* DataController.swift */,
+				E9F95AD322CAEE0700FA3C60 /* BlogModel.xcdatamodeld */,
+				E9E53DFF22CC10F8004F62F6 /* BlogsModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -231,6 +240,9 @@
 				E934C4EE22BC41DB00569AF6 /* BlogsListController.swift in Sources */,
 				E968189722C162790018A1A6 /* DetailedBlogController.swift in Sources */,
 				E915773B22BEBB590091EF52 /* API.swift in Sources */,
+				E9E53E0122CC10F8004F62F6 /* BlogsModel.xcdatamodeld in Sources */,
+				E9F95AD222CAEDDD00FA3C60 /* DataController.swift in Sources */,
+				E9F95AD522CAEE0700FA3C60 /* BlogModel.xcdatamodeld in Sources */,
 				E9AE876C22C683790095B274 /* EditAndAddBlogController+Keyboard.swift in Sources */,
 				E9AE877022C68F560095B274 /* UIViewController+ShowAlert.swift in Sources */,
 				E9AE877222C7C0A20095B274 /* UIViewController+ActivityIndicator.swift in Sources */,
@@ -434,6 +446,29 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E9E53DFF22CC10F8004F62F6 /* BlogsModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E9E53E0022CC10F8004F62F6 /* BlogsModel.xcdatamodel */,
+			);
+			currentVersion = E9E53E0022CC10F8004F62F6 /* BlogsModel.xcdatamodel */;
+			path = BlogsModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		E9F95AD322CAEE0700FA3C60 /* BlogModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E9F95AD422CAEE0700FA3C60 /* BlogModel.xcdatamodel */,
+			);
+			currentVersion = E9F95AD422CAEE0700FA3C60 /* BlogModel.xcdatamodel */;
+			path = BlogModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E934C4D022BC40CB00569AF6 /* Project object */;
 }

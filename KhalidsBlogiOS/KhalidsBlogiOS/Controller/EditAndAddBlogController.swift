@@ -108,6 +108,7 @@ class EditAndAddBlogController: UIViewController {
     func addBlog() {
         
         let blog = BlogToSend(title: titleTextBox.text!, imageName: "", content: contentTextBox.text!)
+        let image = self.imageView.image
         
         API.postBlog(blog: blog) { (blog, error) in
             if error != nil {
@@ -121,8 +122,8 @@ class EditAndAddBlogController: UIViewController {
             guard let blog = blog else {
                 return
             }
-            
-            API.init().imageUploadRequest(image: self.imageView.image!, blogId: blog.id, param: nil, completion: { (boolImage, error) in
+                        
+            API.init().imageUploadRequest(image: image!, blogId: blog.id, param: nil, completion: { (boolImage, error) in
                 if error != nil {
                     debugPrint(error?.localizedDescription as Any)
                     DispatchQueue.main.async {

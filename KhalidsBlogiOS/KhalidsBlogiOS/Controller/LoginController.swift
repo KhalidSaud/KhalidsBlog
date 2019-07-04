@@ -52,20 +52,12 @@ class Login: UIViewController {
     
         let userToSend = UserToSend(email: emailTextField.text!, password: passwordTextField.text!)
         
-        API.getUser(userToSend: userToSend) { (user, response, error) in
+        API.getUser(userToSend: userToSend) { (user, error) in
             if error != nil {
                 debugPrint(error!.localizedDescription)
                 DispatchQueue.main.async {
                     self.showAlert(title: "Error", message: error!.localizedDescription)
                 }
-                return
-            }
-            
-            if response != nil {
-                DispatchQueue.main.async {
-                    self.showAlert(title: "Error", message: response!)
-                }
-                
                 return
             }
             

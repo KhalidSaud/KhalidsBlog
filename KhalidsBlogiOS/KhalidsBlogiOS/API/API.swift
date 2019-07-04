@@ -16,7 +16,7 @@ class API : Login {
     
 
     // MARK: GetUser
-    class func getUser(userToSend: UserToSend ,completions: @escaping (User?, String?, Error?) -> Void) {
+    class func getUser(userToSend: UserToSend ,completions: @escaping (User?, Error?) -> Void) {
         var request = URLRequest(url: URL(string: API.init().UsersApiUrl)!)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -25,20 +25,21 @@ class API : Login {
             
             if error != nil {
                 debugPrint("error")
-                completions(nil, nil, error)
+                completions(nil, error)
                 return
             }
             
             guard let data = data else {
                 debugPrint("No Data")
-                completions(nil, nil, error)
+                completions(nil, error)
                 return
             }
             
             if let httpResponse = response as? HTTPURLResponse {
-                if httpResponse.statusCode == 401 {
-                    let message = String(data: data, encoding: .utf8) as! String
-                    completions(nil, message, nil)
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions(nil, statusCodeError)
                     return
                 }
             }
@@ -46,10 +47,10 @@ class API : Login {
             do {
                 debugPrint("results are here")
                 let responseObject = try JSONDecoder().decode(User.self, from: data)
-                completions(responseObject, nil, nil)
+                completions(responseObject, nil)
             } catch {
                 debugPrint(error)
-                completions(nil, nil, error)
+                completions(nil, error)
                 return
             }
             
@@ -66,6 +67,15 @@ class API : Login {
             if error != nil {
                 completions([], error)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions([], statusCodeError)
+                    return
+                }
             }
             
             guard let data = data else {
@@ -98,6 +108,15 @@ class API : Login {
             if error != nil {
                 completions(nil, error)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions(nil, statusCodeError)
+                    return
+                }
             }
             
             guard let data = data else {
@@ -134,6 +153,15 @@ class API : Login {
                 return
             }
             
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions(nil, statusCodeError)
+                    return
+                }
+            }
+            
             guard let data = data else {
                 debugPrint("No Data")
                 completions(nil, error)
@@ -156,6 +184,15 @@ class API : Login {
             if error != nil {
                 completions(nil, error)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions(nil, statusCodeError)
+                    return
+                }
             }
             
             guard let data = data else {
@@ -191,6 +228,15 @@ class API : Login {
             if error != nil {
                 completions(nil, error)
                 return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = self.checkStatusCode(statusCode: httpStatusCode)
+                    completions(nil, statusCodeError)
+                    return
+                }
             }
             
             guard let data = data else {
@@ -233,7 +279,17 @@ class API : Login {
         request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
         
         let task =  URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
-                    if let data = data {
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                let httpStatusCode = httpResponse.statusCode
+                if !(httpStatusCode >= 200 && httpStatusCode < 300) {
+                    let statusCodeError = API.checkStatusCode(statusCode: httpStatusCode)
+                    completion(false, statusCodeError)
+                    return
+                }
+            }
+            
+            if let data = data {
                         
                         // You can print out response object
                         print("******* response = \(String(describing: response))")
@@ -284,6 +340,44 @@ class API : Login {
         return "Boundary-\(NSUUID().uuidString)"
     }
     
+    
+    class func checkStatusCode(statusCode: Int) -> Error {
+        
+        print(statusCode)
+        
+        switch statusCode {
+        case 400:
+            print("Bad Request")
+            return self.getErrorMessage(message: "Bad Request", statusCode: 400)!
+        case 401:
+            print("Invalid Credentials")
+            return self.getErrorMessage(message: "Invalid Credentials", statusCode: 401)!
+        case 402:
+            print("Unauthorized")
+            return self.getErrorMessage(message: "Unauthorized", statusCode: 402)!
+        case 405:
+            print("HttpMethod Not Allowed")
+            return self.getErrorMessage(message: "HttpMethod Not Allowed", statusCode: 405)!
+        case 410:
+            print("URL Changed")
+            return self.getErrorMessage(message: "URL Changed", statusCode: 410)!
+        case 500:
+            print("Server Error")
+            return self.getErrorMessage(message: "Server Error", statusCode: 500)!
+        default:
+            print("Something is wrong.")
+            return self.getErrorMessage(message: "Bad Request", statusCode: 400)!
+        }
+        
+    }
+    
+    class func getErrorMessage(message: String, statusCode: Int) -> NSError? {
+        let errorInfo = [NSLocalizedDescriptionKey: message]
+        let errorObj = NSError(domain: "Error", code: statusCode, userInfo: errorInfo)
+        return errorObj
+    }
+    
+    
 }
 
 extension NSMutableData {
@@ -293,5 +387,7 @@ extension NSMutableData {
         append(data!)
     }
 }
+
+
     
 
