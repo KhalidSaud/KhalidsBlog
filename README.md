@@ -19,14 +19,14 @@ API is connected to a personal Server.
 
 Get request all blogs : "https://myblogapi.khalidsaud.com/api/blogs"
 Response : 
-[
+```[
     {
         "id": 17,
         "title": "Flowers 3",
         "imageName": "065e20fc-be55-4b83-b920-deeb0501cb62.jpg",
         "content": "Content about flowers"
     }
-]
+]```
 
 Post request : "https://myblogapi.khalidsaud.com/api/blogs"
 Response : 
